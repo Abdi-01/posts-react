@@ -1,7 +1,9 @@
 import FormInput from "@/components/FormInput";
 import * as React from "react";
+import AccountImage from "../../../public/access_account.svg";
+import Image from "next/image";
 
-interface ISignInProps {}
+interface ISignInProps { }
 
 const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
   return (
@@ -28,6 +30,8 @@ const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
           odit rem ab molestias maxime voluptatum, ipsa dicta modi est voluptas
           eos.
         </p>
+        <Image src={AccountImage} alt="image" width={350} className="m-auto" />
+
       </div>
     </div>
   );

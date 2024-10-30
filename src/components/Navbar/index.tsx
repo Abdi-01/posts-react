@@ -2,12 +2,12 @@ import Link from "next/link";
 import * as React from "react";
 import { FaSearch } from "react-icons/fa";
 
-interface INavbarProps {}
+interface INavbarProps { }
 
 const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
   return (
     <div className="flex items-center justify-between px-24 py-5">
-      <h1 className="text-3xl font-bold">P</h1>
+      <Link href="/" className="text-3xl font-bold">P</Link>
       <ul className="flex items-center gap-5">
         <li>
           <div className="relative">
