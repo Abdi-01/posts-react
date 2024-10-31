@@ -1,13 +1,18 @@
-import Link from "next/link";
+"use client";
 import * as React from "react";
+import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
+import { LanguageContext } from "@/contexts/LanguageContext";
 
-interface INavbarProps { }
+interface INavbarProps {}
 
 const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
+  const { language, setLanguage } = React.useContext(LanguageContext);
   return (
     <div className="flex items-center justify-between px-24 py-5">
-      <Link href="/" className="text-3xl font-bold">P</Link>
+      <Link href="/" className="text-3xl font-bold">
+        P
+      </Link>
       <ul className="flex items-center gap-5">
         <li>
           <div className="relative">
@@ -22,7 +27,12 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
           </div>
         </li>
         <li>
-          <select className="bg-transparent">
+          <span className="uppercase border p-1 rounded mx-2">{language}</span>
+          <select
+            className="bg-transparent"
+            value={language}
+            onChange={(e: any) => setLanguage(e.target.value)}
+          >
             <option value="en">English (United State)</option>
             <option value="id">Indonesia</option>
           </select>

@@ -1,10 +1,24 @@
+"use client";
 import * as React from "react";
 import FormInput from "@/components/FormInput";
 import Image from "next/image";
 import AccountImage from "../../../public/access_account.svg";
+import { callAPI } from "@/config/axios";
 interface ISignUpProps {}
 
 const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
+  const onSignUp = async () => {
+    try {
+      // Lengkapi fungsi ini hingga bisa menambah data ke file db.json
+      const res = await callAPI.post("/users", {
+        name: "",
+        email: "",
+        password: "",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="px-24 py-14 bg-slate-800 h-screen flex items-center gap-16">
       <div id="left" className="w-1/2 flex flex-col justify-center space-y-5">
