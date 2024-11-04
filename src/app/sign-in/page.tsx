@@ -4,12 +4,16 @@ import * as React from "react";
 import AccountImage from "../../../public/access_account.svg";
 import Image from "next/image";
 import { callAPI } from "../../config/axios";
-
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { setSignIn } from "@/lib/redux/features/userSlice";
 interface ISignInProps {}
 
 const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
+
+  // Define dispatch from useAppDispatch for execute function actions from redux
+  const dispatch = useAppDispatch();
 
   const onSignIn = async () => {
     try {
@@ -17,6 +21,7 @@ const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
         `/users?email=${email}&password=${password}`
       );
       console.log("CHECK SIGNIN RESPONSE : ", response.data);
+      dispatch(setSignIn(response.data[0])); // store data to global store redux
       localStorage.setItem("dataUser", JSON.stringify(response.data[0]));
     } catch (error) {
       console.log(error);

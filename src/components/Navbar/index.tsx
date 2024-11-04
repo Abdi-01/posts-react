@@ -3,11 +3,14 @@ import * as React from "react";
 import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
 import { LanguageContext } from "@/contexts/LanguageContext";
-
+import { useAppSelector } from "@/lib/redux/hooks";
 interface INavbarProps {}
 
 const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
   const { language, setLanguage } = React.useContext(LanguageContext);
+  // Redux
+  // Get value from global store reducer user
+  const user = useAppSelector((state) => state.userReducer);
   return (
     <div className="flex items-center justify-between px-24 py-5">
       <Link href="/" className="text-3xl font-bold">
@@ -38,18 +41,24 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
           </select>
         </li>
         <li className="flex gap-2">
-          <Link
-            href="/sign-up"
-            className="bg-slate-200 text-slate-700 px-3 py-1 rounded-md shadow"
-          >
-            Sign Up
-          </Link>
-          <Link
-            href="/sign-in"
-            className="bg-slate-700 text-white px-3 py-1 rounded-md shadow"
-          >
-            Sign In
-          </Link>
+          {user.email ? (
+            <p>{user.email}</p>
+          ) : (
+            <>
+              <Link
+                href="/sign-up"
+                className="bg-slate-200 text-slate-700 px-3 py-1 rounded-md shadow"
+              >
+                Sign Up
+              </Link>
+              <Link
+                href="/sign-in"
+                className="bg-slate-700 text-white px-3 py-1 rounded-md shadow"
+              >
+                Sign In
+              </Link>
+            </>
+          )}
         </li>
       </ul>
     </div>
