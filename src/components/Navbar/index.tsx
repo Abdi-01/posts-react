@@ -11,6 +11,22 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
   // Redux
   // Get value from global store reducer user
   const user = useAppSelector((state) => state.userReducer);
+
+  const keepLogin = async () => {
+    try {
+      // code
+      // - Check apakah ada data login pada localStorage
+      // - Jika ada, gunakan data id user untuk megambil data melalui API
+      // - Setelah mendapat data user dari API, simpan lagi ke global store redux
+      // - Simpan juga ke localStorage
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  React.useEffect(() => {
+    keepLogin();
+  }, []);
   return (
     <div className="flex items-center justify-between px-24 py-5">
       <Link href="/" className="text-3xl font-bold">
