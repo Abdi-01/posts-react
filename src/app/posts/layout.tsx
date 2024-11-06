@@ -1,3 +1,4 @@
+import AuthGuard from "@/guard/AuthGuard";
 import * as React from "react";
 
 interface ILayoutProps {
@@ -8,9 +9,9 @@ const PostsLayout: React.FunctionComponent<ILayoutProps> = async ({ children }) 
   await new Promise((resolve) => setTimeout(resolve, 5000));
   return (
     <div className="container container-lg m-auto">
-      {/* <AuthGuard> */}
-      {children}
-      {/* </AuthGuard> */}
+      <AuthGuard>
+        {children}
+      </AuthGuard>
     </div>
   );
 };
