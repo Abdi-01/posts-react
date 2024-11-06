@@ -23,7 +23,7 @@ const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
         `/users?email=${email}&password=${password}`
       );
       console.log("CHECK SIGNIN RESPONSE : ", response.data);
-      dispatch(setSignIn(response.data[0])); // store data to global store redux
+      dispatch(setSignIn({ ...response.data[0], isAuth: true })); // store data to global store redux
       localStorage.setItem("dataUser", JSON.stringify(response.data[0]));
       router.replace("/posts");
     } catch (error) {
@@ -32,37 +32,47 @@ const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
   };
 
   return (
-    <div className="px-24 py-14 bg-slate-800 h-screen flex items-center gap-16">
-      <div id="left" className="w-1/2 h-fit rounded-2xl px-10 py-8 bg-white">
-        <h1 className="text-2xl">Sign in </h1>
-        <div className="py-6 space-y-5">
-          <FormInput
-            type="text"
-            label="Email"
-            onChange={(e: any) => setEmail(e.target.value)}
-          />
-          <FormInput
-            type="password"
-            label="Password"
-            onChange={(e: any) => setPassword(e.target.value)}
-          />
-          <div className="flex items-center gap-4">
-            <button
-              type="button"
-              className="bg-gray-400 text-white px-4 py-2 rounded-full shadow"
-              onClick={onSignIn}
-            >
-              Sign In
-            </button>
+    <div className="bg-slate-800 h-screen">
+      <div className=" flex items-center gap-16 container container-lg m-auto px-24 py-52">
+        <div id="left" className="w-1/2 h-fit rounded-2xl px-10 py-8 bg-white">
+          <h1 className="text-2xl">Sign in </h1>
+          <div className="py-6 space-y-5">
+            <FormInput
+              type="text"
+              label="Email"
+              onChange={(e: any) => setEmail(e.target.value)}
+            />
+            <FormInput
+              type="password"
+              label="Password"
+              onChange={(e: any) => setPassword(e.target.value)}
+            />
+            <div className="flex items-center gap-4">
+              <button
+                type="button"
+                className="bg-gray-400 text-white px-4 py-2 rounded-full shadow"
+                onClick={onSignIn}
+              >
+                Sign In
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      <div id="right" className="w-1/2 flex flex-col justify-center space-y-5">
-        <h1 className="text-3xl text-white font-bold">Post your story</h1>
-        <p className="text-white">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        </p>
-        <Image src={AccountImage} alt="image" width={350} className="m-auto" />
+        <div
+          id="right"
+          className="w-1/2 flex flex-col justify-center space-y-5"
+        >
+          <h1 className="text-3xl text-white font-bold">Post your story</h1>
+          <p className="text-white">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          </p>
+          <Image
+            src={AccountImage}
+            alt="image"
+            width={350}
+            className="m-auto"
+          />
+        </div>
       </div>
     </div>
   );
