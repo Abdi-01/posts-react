@@ -6,7 +6,7 @@ interface ILayoutProps {
 }
 
 const PostsLayout: React.FunctionComponent<ILayoutProps> = async ({ children }) => {
-  await new Promise((resolve) => setTimeout(resolve, 5000));
+  // await new Promise((resolve) => setTimeout(resolve, 5000));
   return (
     <div className="container container-lg m-auto">
       <AuthGuard>
