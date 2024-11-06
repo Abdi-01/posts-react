@@ -48,7 +48,7 @@ const Posts: React.FunctionComponent<IPostsProps> = (props) => {
           />
           <div>
             <h3 className="font-semibold">{val.name}</h3>
-            <p className="text-xs font-extralight">{val.phone}</p>
+            <p className="text-xs font-extralight">{val.username}</p>
           </div>
         </div>
       );

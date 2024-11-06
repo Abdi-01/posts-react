@@ -6,9 +6,11 @@ import Image from "next/image";
 import { callAPI } from "../../config/axios";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { setSignIn } from "@/lib/redux/features/userSlice";
+import { useRouter } from "next/navigation";
 interface ISignInProps {}
 
 const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
+  const router = useRouter();
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
 
@@ -23,6 +25,7 @@ const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
       console.log("CHECK SIGNIN RESPONSE : ", response.data);
       dispatch(setSignIn(response.data[0])); // store data to global store redux
       localStorage.setItem("dataUser", JSON.stringify(response.data[0]));
+      router.replace("/posts");
     } catch (error) {
       console.log(error);
     }
