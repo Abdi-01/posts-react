@@ -4,10 +4,12 @@ import axios from "axios";
 import { FaFile, FaImage } from "react-icons/fa";
 import { FaLocationPin } from "react-icons/fa6";
 import { callAPI } from "@/config/axios";
+import { useRouter } from "next/navigation";
 
-interface IPostsProps {}
+interface IPostsProps { }
 
-const Posts: React.FunctionComponent<IPostsProps> = (props) => {
+const PostPage: React.FunctionComponent<IPostsProps> = (props) => {
+  const router = useRouter();
   const [userList, setUserList] = React.useState<any[]>([]);
   const [postsList, setPostsList] = React.useState<any[]>([]);
   const [post, setPost] = React.useState<string>("");
@@ -60,7 +62,8 @@ const Posts: React.FunctionComponent<IPostsProps> = (props) => {
       return (
         <div
           key={idx}
-          className="flex items-center bg-white rounded-s-full rounded-e-xl"
+          className="flex items-center bg-white rounded-s-full rounded-e-xl cursor-pointer"
+          onClick={() => router.push(`/posts/${val.id}`)}
         >
           <img
             className="w-20 h-20 bg-slate-100 rounded-full shadow-md"
@@ -128,4 +131,4 @@ const Posts: React.FunctionComponent<IPostsProps> = (props) => {
   );
 };
 
-export default Posts;
+export default PostPage;

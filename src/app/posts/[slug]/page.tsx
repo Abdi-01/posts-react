@@ -1,11 +1,11 @@
 // Server component
 import axios from "axios";
 
-interface IDetailProps {
+interface IPostPageProps {
   params: { slug: string };
 }
 
-const Detail: React.FunctionComponent<IDetailProps> = async ({ params }) => {
+const PostPage: React.FunctionComponent<IPostPageProps> = async ({ params }) => {
   const res = await axios.get(
     `https://jsonplaceholder.typicode.com/posts?id=${params.slug}`
   );
@@ -17,4 +17,4 @@ const Detail: React.FunctionComponent<IDetailProps> = async ({ params }) => {
   );
 };
 
-export default Detail;
+export default PostPage;
