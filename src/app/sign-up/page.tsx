@@ -6,9 +6,9 @@ import AccountImage from "../../../public/access_account.svg";
 import { callAPI } from "@/config/axios";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-interface ISignUpProps {}
+interface ISignUpPageProps {}
 
-const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
+const SignUpPage: React.FunctionComponent<ISignUpPageProps> = (props) => {
   const onSignUp = async () => {
     try {
       // Lengkapi fungsi ini hingga bisa menambah data ke file db.json
@@ -61,4 +61,4 @@ const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
   );
 };
 
-export default SignUp;
+export default SignUpPage;

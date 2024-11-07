@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import LanguageProvider from "@/contexts/LanguageContext";
 import StoreProvider from "./StoreProvider";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,16 +30,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <StoreProvider>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <LanguageProvider>
-            <Navbar />
-            {children}
-          </LanguageProvider>
-        </body>
-      </StoreProvider>
+      <Suspense fallback={<Loading />}>
+        <StoreProvider>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          >
+            <LanguageProvider>
+              <Navbar />
+              {children}
+            </LanguageProvider>
+          </body>
+        </StoreProvider>
+      </Suspense>
     </html>
   );
 }

@@ -8,9 +8,9 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { setSignIn } from "@/lib/redux/features/userSlice";
 import { useRouter } from "next/navigation";
 
-interface ISignInProps {}
+interface ISignInPageProps {}
 
-const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
+const SignInPage: React.FunctionComponent<ISignInPageProps> = (props) => {
   const router = useRouter();
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
@@ -24,7 +24,7 @@ const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
         `/users?email=${email}&password=${password}`
       );
       console.log("CHECK SIGNIN RESPONSE : ", response.data);
-      dispatch(setSignIn(response.data[0])); // store data to global store redux
+      dispatch(setSignIn({ ...response.data[0], isAuth: true })); // store data to global store redux
       localStorage.setItem("dataUser", JSON.stringify(response.data[0]));
       router.replace("/posts");
     } catch (error) {
@@ -69,4 +69,4 @@ const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
   );
 };
 
-export default SignIn;
+export default SignInPage;

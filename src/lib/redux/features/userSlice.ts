@@ -5,6 +5,7 @@ interface IUser {
   name: string;
   username: string;
   email: string;
+  isAuth?: boolean;
 }
 
 const initialData: IUser = {

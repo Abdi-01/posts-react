@@ -1,17 +1,17 @@
 import * as React from "react";
 import { Metadata } from "next";
 
-interface ISignInLayout {
+interface ISignUpLayout {
   children: React.ReactNode;
 }
 
 export const metadata: Metadata = {
-  title: "Sign In",
+  title: "Sign Up",
   description: "Join to share your story",
 };
 
-const SignInLayout: React.FunctionComponent<ISignInLayout> = ({ children }) => {
+const SignUpLayout: React.FunctionComponent<ISignUpLayout> = ({ children }) => {
   return <div>{children}</div>;
 };
 
-export default SignInLayout;
+export default SignUpLayout;

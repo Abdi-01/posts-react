@@ -3,22 +3,31 @@ import * as React from "react";
 import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
 import { LanguageContext } from "@/contexts/LanguageContext";
-import { useAppSelector } from "@/lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { callAPI } from "@/config/axios";
+import { setSignIn } from "@/lib/redux/features/userSlice";
 interface INavbarProps {}
 
 const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
   const { language, setLanguage } = React.useContext(LanguageContext);
   // Redux
+  const dispatch = useAppDispatch();
   // Get value from global store reducer user
   const user = useAppSelector((state) => state.userReducer);
 
   const keepLogin = async () => {
     try {
-      // code
-      // - Check apakah ada data login pada localStorage
-      // - Jika ada, gunakan data id user untuk megambil data melalui API
-      // - Setelah mendapat data user dari API, simpan lagi ke global store redux
-      // - Simpan juga ke localStorage
+      const tokenData = localStorage.getItem("dataUser");
+      if (tokenData) {
+        const response = await callAPI.get(
+          `/users?id=${JSON.parse(tokenData)?.id}`
+        );
+        console.log("CHECK SIGNIN RESPONSE : ", response.data);
+        dispatch(setSignIn({ ...response.data[0], isAuth: true })); // store data to global store redux
+        localStorage.setItem("dataUser", JSON.stringify(response.data[0]));
+      } else {
+        dispatch(setSignIn({ isAuth: false })); // store data to global store redux
+      }
     } catch (error) {
       console.log(error);
     }
