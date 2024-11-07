@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { FaFile, FaImage } from "react-icons/fa";
 import { FaLocationPin } from "react-icons/fa6";
+import { callAPI } from "@/config/axios";
 
 interface IPostPageProps {}
 
@@ -15,7 +16,7 @@ const PostPage: React.FunctionComponent<IPostPageProps> = (props) => {
   const [post, setPost] = React.useState<string>("");
   const getUserList = async () => {
     try {
-      const res = await axios.get("https://jsonplaceholder.typicode.com/users");
+      const res = await callAPI.get("/users");
       setUserList(res.data);
     } catch (error) {
       console.log(error);
@@ -24,7 +25,7 @@ const PostPage: React.FunctionComponent<IPostPageProps> = (props) => {
 
   const getPostsList = async () => {
     try {
-      const res = await axios.get("https://jsonplaceholder.typicode.com/posts");
+      const res = await callAPI.get("/posts");
       setPostsList(res.data);
       console.log(res.data);
     } catch (error) {

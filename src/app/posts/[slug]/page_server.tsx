@@ -1,4 +1,5 @@
 // Server component
+import { callAPI } from "@/config/axios";
 import axios from "axios";
 
 interface IPostDetailProps {
@@ -8,9 +9,7 @@ interface IPostDetailProps {
 const PostDetail: React.FunctionComponent<IPostDetailProps> = async ({
   params,
 }) => {
-  const res = await axios.get(
-    `https://jsonplaceholder.typicode.com/posts?id=${params.slug}`
-  );
+  const res = await callAPI.get(`/posts?id=${params.slug}`);
   console.log(res.data);
 
   return (
