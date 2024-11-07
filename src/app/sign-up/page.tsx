@@ -6,7 +6,7 @@ import AccountImage from "../../../public/access_account.svg";
 import { callAPI } from "@/config/axios";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Formik, Form, Field, FormikProps } from "formik";
+import { Formik, Form, FormikProps } from "formik";
 import { SignUpSchema } from "./schemas/SignUpSchema";
 
 interface ISignUpPageProps {}
@@ -19,14 +19,15 @@ interface FormValue {
 }
 
 const SignUpPage: React.FunctionComponent<ISignUpPageProps> = (props) => {
-  const onSignUp = async () => {
+  const onSignUp = async (name: string, email: string, password: string) => {
     try {
       // Lengkapi fungsi ini hingga bisa menambah data ke file db.json
       const res = await callAPI.post("/users", {
-        name: "",
-        email: "",
-        password: "",
+        name,
+        email,
+        password,
       });
+      console.log("signup response", res.data);
     } catch (error) {
       console.log(error);
     }
@@ -58,7 +59,12 @@ const SignUpPage: React.FunctionComponent<ISignUpPageProps> = (props) => {
               }}
               validationSchema={SignUpSchema}
               onSubmit={(values) => {
-                console.log(values);
+                // console.log(values);
+                onSignUp(
+                  `${values.firstName} ${values.lastName}`,
+                  values.email,
+                  values.password
+                );
               }}
             >
               {(props: FormikProps<FormValue>) => {
