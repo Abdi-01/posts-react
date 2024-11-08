@@ -2,19 +2,23 @@
 import React, { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 interface IFormInput {
+  id: string;
   type: string;
   label?: string;
   placeholder?: string;
   onChange?: (e: any) => void;
   ref?: any;
+  value?: string;
 }
 
 const FormInput: React.FC<IFormInput> = ({
+  id,
   type,
   label,
   placeholder,
   onChange,
   ref,
+  value,
 }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   if (type === "password") {
@@ -32,13 +36,17 @@ const FormInput: React.FC<IFormInput> = ({
         <label className="font-semibold">{label}</label>
         <div className="relative">
           <input
+            id={id}
+            name={id}
             ref={ref}
             type={activeType}
             placeholder={placeholder}
             className="w-full border border-gray-300 px-3 py-1 rounded-md shadow-md"
             onChange={onChange}
+            value={value}
           />
           <button
+            type="button"
             className="absolute right-1 top-1 w-12 p-1 rounded-md border"
             onClick={() => setIsVisible(!isVisible)}
           >
@@ -52,10 +60,13 @@ const FormInput: React.FC<IFormInput> = ({
     <div className="flex flex-col w-full gap-2">
       <label className="font-semibold">{label}</label>
       <input
+        id={id}
+        name={id}
         type={type}
         placeholder={placeholder}
         className="w-full border border-gray-300 px-3 py-1 rounded-md shadow-md"
         onChange={onChange}
+        value={value}
       />
     </div>
   );

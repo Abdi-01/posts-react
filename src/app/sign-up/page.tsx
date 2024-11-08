@@ -6,16 +6,19 @@ import AccountImage from "../../../public/access_account.svg";
 import { callAPI } from "@/config/axios";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Formik, Form, FormikProps } from "formik";
+import { SignUpSchema } from "./SignUpSchema";
+import { ISignUpValue } from "./type";
 interface ISignUpPageProps {}
 
 const SignUpPage: React.FunctionComponent<ISignUpPageProps> = (props) => {
-  const onSignUp = async () => {
+  const onSignUp = async (formValue: ISignUpValue) => {
     try {
       // Lengkapi fungsi ini hingga bisa menambah data ke file db.json
       const res = await callAPI.post("/users", {
-        name: "",
-        email: "",
-        password: "",
+        name: `${formValue.firstName} ${formValue.lastName}`,
+        email: formValue.email,
+        password: formValue.password,
       });
     } catch (error) {
       console.log(error);
@@ -39,21 +42,79 @@ const SignUpPage: React.FunctionComponent<ISignUpPageProps> = (props) => {
             <h1 className="text-2xl">Sign up now</h1>
           </CardHeader>
           <CardContent>
-            <div className="py-2 md:py-6 space-y-5">
-              <div className="flex gap-8">
-                <FormInput type="text" label="First name" />
-                <FormInput type="text" label="Last name" />
-              </div>
-              <FormInput type="text" label="Email" />
-              <FormInput type="password" label="Password" />
-              <FormInput type="password" label="Confirmation Password" />
-              <div className="flex items-center gap-4">
-                <Button className="bg-gray-400 text-white px-2 md:px-4 py-1 md:py-2 text-sm md:text-base rounded-full shadow">
-                  Sign Up
-                </Button>
-                <p className="text-sm">Already have an account ?</p>
-              </div>
-            </div>
+            <Formik
+              validationSchema={SignUpSchema}
+              initialValues={{
+                firstName: "",
+                lastName: "",
+                email: "",
+                password: "",
+                confPassword: "",
+              }}
+              onSubmit={(values, { resetForm }) => {
+                console.log("Value from input formik :", values);
+                onSignUp(values);
+                resetForm();
+              }}
+            >
+              {(props: FormikProps<ISignUpValue>) => {
+                const { values, handleChange, errors, touched } = props;
+                return (
+                  <Form>
+                    <div className="py-2 md:py-6 space-y-5">
+                      <div className="flex gap-8">
+                        <FormInput
+                          id="firstName"
+                          type="text"
+                          label="First name"
+                          onChange={handleChange}
+                          value={values.firstName}
+                        />
+                        <FormInput
+                          id="lastName"
+                          type="text"
+                          label="Last name"
+                          onChange={handleChange}
+                          value={values.lastName}
+                        />
+                      </div>
+                      <FormInput
+                        id="email"
+                        type="text"
+                        label="Email"
+                        onChange={handleChange}
+                        value={values.email}
+                      />
+                      <p className="text-red-500">{errors.email}</p>
+                      <FormInput
+                        id="password"
+                        type="password"
+                        label="Password"
+                        onChange={handleChange}
+                        value={values.password}
+                      />
+                      <p className="text-red-500">{errors.password}</p>
+                      <FormInput
+                        id="confPassword"
+                        type="password"
+                        label="Confirmation Password"
+                        onChange={handleChange}
+                        value={values.confPassword}
+                      />
+                      <div className="flex items-center gap-4">
+                        <Button
+                          type="submit"
+                          className="bg-gray-400 text-white px-2 md:px-4 py-1 md:py-2 text-sm md:text-base rounded-full shadow"
+                        >
+                          Sign Up
+                        </Button>
+                        <p className="text-sm">Already have an account ?</p>
+                      </div>
+                    </div>
+                  </Form>
+                );
+              }}
+            </Formik>
           </CardContent>
         </Card>
       </div>
