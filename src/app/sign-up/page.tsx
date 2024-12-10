@@ -1,33 +1,36 @@
 "use client";
 import * as React from "react";
-import FormInput from "@/components/FormInput";
 import Image from "next/image";
 import AccountImage from "../../../public/access_account.svg";
 import { callAPI } from "@/config/axios";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import FormInput from "@/components/FormInput";
 import { Formik, Form, FormikProps } from "formik";
 import { SignUpSchema } from "./schemas/SignUpSchema";
 
 interface ISignUpPageProps {}
 
 interface FormValue {
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
+  username: string;
   email: string;
   password: string;
 }
 
 const SignUpPage: React.FunctionComponent<ISignUpPageProps> = (props) => {
-  const onSignUp = async (name: string, email: string, password: string) => {
+  const onSignUp = async (values: FormValue) => {
     try {
       // Lengkapi fungsi ini hingga bisa menambah data ke file db.json
-      const res = await callAPI.post("/users", {
-        name,
-        email,
-        password,
+      const res = await callAPI.post("/user/signup", {
+        firstname: values.firstname,
+        lastname: values.lastname,
+        username: values.username,
+        email: values.email,
+        password: values.password,
       });
-      console.log("signup response", res.data);
+      alert(res.data.message);
     } catch (error) {
       console.log(error);
     }
@@ -52,42 +55,48 @@ const SignUpPage: React.FunctionComponent<ISignUpPageProps> = (props) => {
           <CardContent>
             <Formik
               initialValues={{
-                firstName: "",
-                lastName: "",
+                firstname: "",
+                lastname: "",
+                username: "",
                 email: "",
                 password: "",
               }}
               validationSchema={SignUpSchema}
               onSubmit={(values) => {
                 // console.log(values);
-                onSignUp(
-                  `${values.firstName} ${values.lastName}`,
-                  values.email,
-                  values.password
-                );
+                onSignUp(values);
               }}
             >
               {(props: FormikProps<FormValue>) => {
                 const { handleChange, values, touched, errors } = props;
+                console.log("error formik", errors);
+
                 return (
                   <Form>
                     <div className="py-2 md:py-6 space-y-5">
                       <div className="flex gap-8">
                         <FormInput
                           type="text"
-                          name="firstName"
+                          name="firstname"
                           label="First name"
                           onChange={handleChange}
-                          value={values.firstName}
+                          value={values.firstname}
                         />
                         <FormInput
                           type="text"
-                          name="lastName"
+                          name="lastname"
                           label="Last name"
                           onChange={handleChange}
-                          value={values.lastName}
+                          value={values.lastname}
                         />
                       </div>
+                      <FormInput
+                        type="text"
+                        name="username"
+                        label="Username"
+                        onChange={handleChange}
+                        value={values.username}
+                      />
                       <FormInput
                         type="text"
                         name="email"

@@ -1,16 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface IUser {
-  id: string;
-  name: string;
+  firstname: string;
+  lastname: string;
   username: string;
   email: string;
+  phone?: string;
+  website?: string;
+  imgprofile?: string;
+  isVerified?: boolean;
   isAuth?: boolean;
 }
 
 const initialData: IUser = {
-  id: "",
-  name: "",
+  firstname: "",
+  lastname: "",
   username: "",
   email: "",
 };
@@ -29,11 +33,16 @@ const userSlice = createSlice({
       // reset data in global store user reducer
       return { ...initialData };
     },
+    setUpdateProfile: (initialState, action) => {
+      console.log("NEW PROFILE UPDATE", action.payload);
+
+      return { ...initialState, ...action.payload };
+    },
   },
 });
 
 // Export action
-export const { setSignIn, setSignOut } = userSlice.actions;
+export const { setSignIn, setSignOut, setUpdateProfile } = userSlice.actions;
 
 // Export reducer
 export default userSlice.reducer;

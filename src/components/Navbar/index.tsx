@@ -17,14 +17,16 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
 
   const keepLogin = async () => {
     try {
-      const tokenData = localStorage.getItem("dataUser");
-      if (tokenData) {
-        const response = await callAPI.get(
-          `/users?id=${JSON.parse(tokenData)?.id}`
-        );
+      const token = localStorage.getItem("tkn");
+      if (token) {
+        const response = await callAPI.get(`/user/keep-login`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         console.log("CHECK SIGNIN RESPONSE : ", response.data);
-        dispatch(setSignIn({ ...response.data[0], isAuth: true })); // store data to global store redux
-        localStorage.setItem("dataUser", JSON.stringify(response.data[0]));
+        dispatch(setSignIn({ ...response.data, isAuth: true })); // store data to global store redux
+        localStorage.setItem("tkn", response.data.token);
       } else {
         dispatch(setSignIn({ isAuth: false })); // store data to global store redux
       }

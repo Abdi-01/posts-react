@@ -33,7 +33,7 @@ const FormInput: React.FC<IFormInput> = ({
     }
     return (
       <div className="flex flex-col gap-2">
-        <label className="font-semibold">{label}</label>
+        <label className="font-medium">{label}</label>
         <div className="relative">
           <input
             id={name}
@@ -41,7 +41,7 @@ const FormInput: React.FC<IFormInput> = ({
             ref={ref}
             type={activeType}
             placeholder={placeholder}
-            className="w-full border border-gray-300 px-3 py-1 rounded-md shadow-md"
+            className="w-full border border-gray-100 px-3 py-2 rounded-md shadow"
             onChange={onChange}
           />
           <button
@@ -57,13 +57,13 @@ const FormInput: React.FC<IFormInput> = ({
   }
   return (
     <div className="flex flex-col w-full gap-2">
-      <label className="font-semibold">{label}</label>
+      <label className="font-medium">{label}</label>
       <input
         id={name}
         name={name}
         type={type}
         placeholder={placeholder}
-        className="w-full border border-gray-300 px-3 py-1 rounded-md shadow-md"
+        className="w-full border border-gray-100 px-3 py-2 rounded-md shadow"
         onChange={onChange}
         value={value}
       />
