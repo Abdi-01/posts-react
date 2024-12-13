@@ -1,20 +1,17 @@
 "use client";
 import * as React from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { FaFile, FaImage } from "react-icons/fa";
 import { FaLocationPin } from "react-icons/fa6";
 import { callAPI } from "@/config/axios";
 
-interface IPostPageProps {}
-
-const PostPage: React.FunctionComponent<IPostPageProps> = (props) => {
+const PostPage: React.FunctionComponent = () => {
   const router = useRouter();
 
   const [userList, setUserList] = React.useState<any[]>([]);
   const [postsList, setPostsList] = React.useState<any[]>([]);
   const [post, setPost] = React.useState<string>("");
-  const getUserList = async () => {
+  const getUserList = async (): Promise<void> => {
     try {
       const res = await callAPI.get("/users");
       setUserList(res.data);
@@ -26,8 +23,8 @@ const PostPage: React.FunctionComponent<IPostPageProps> = (props) => {
   const getPostsList = async () => {
     try {
       const res = await callAPI.get("/posts");
-      setPostsList(res.data);
-      console.log(res.data);
+      setPostsList(res.data.result);
+      console.log("posts", res.data);
     } catch (error) {
       console.log(error);
     }
@@ -65,16 +62,19 @@ const PostPage: React.FunctionComponent<IPostPageProps> = (props) => {
         <div
           key={idx}
           className="flex items-center bg-white rounded-s-full rounded-e-xl cursor-pointer"
-          onClick={() => router.push(`/posts/${val.id}`)}
+          onClick={() => router.push(`/posts/${val.title}`)}
         >
           <img
             className="w-20 h-20 bg-slate-100 rounded-full shadow-md"
             src={`https://robohash.org/${val.userId}-${val.id}.png`}
             alt="icon"
           />
-          <div className="px-8">
-            <h4 className="uppercase font-semibold">{val.title}</h4>
-            <p className="font-thin"> {val.body}</p>
+          <div className="px-8 rounded-e-xl">
+            <h4 className="uppercase font-semibold">{val.user.username}</h4>
+            <h6 className="text-xs font-thin">
+              {new Date(val.createdAt).toLocaleString()}
+            </h6>
+            <h4>{val.title}</h4>
           </div>
         </div>
       );
@@ -82,7 +82,7 @@ const PostPage: React.FunctionComponent<IPostPageProps> = (props) => {
   };
 
   return (
-    <div className="px-24 py-14 bg-slate-100 min-h-screen flex gap-8">
+    <>
       <div id="timeline" className="w-full">
         <div className="flex items-center">
           <img
@@ -127,10 +127,10 @@ const PostPage: React.FunctionComponent<IPostPageProps> = (props) => {
         <hr className="my-4" />
         <div className="space-y-3">{printPostsList()}</div>
       </div>
-      <div id="user-list" className="w-1/4">
+      <div id="user-list" className="lg:block lg:w-1/4">
         <div className="sticky top-2">{printUserList()}</div>
       </div>
-    </div>
+    </>
   );
 };
 

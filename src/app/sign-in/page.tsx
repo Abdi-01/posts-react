@@ -8,9 +8,7 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { setSignIn } from "@/lib/redux/features/userSlice";
 import { useRouter } from "next/navigation";
 
-interface ISignInPageProps {}
-
-const SignInPage: React.FunctionComponent<ISignInPageProps> = (props) => {
+const SignInPage: React.FunctionComponent = () => {
   const router = useRouter();
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");

@@ -3,9 +3,7 @@ import * as React from "react";
 import { useSearchParams } from "next/navigation";
 import { callAPI } from "@/config/axios";
 
-interface IVerifyProps {}
-
-const Verify: React.FunctionComponent<IVerifyProps> = (props) => {
+const Verify: React.FunctionComponent = () => {
   const queryParams = useSearchParams();
   const handleVerified = async () => {
     try {

@@ -9,8 +9,6 @@ import FormInput from "@/components/FormInput";
 import { Formik, Form, FormikProps } from "formik";
 import { SignUpSchema } from "./schemas/SignUpSchema";
 
-interface ISignUpPageProps {}
-
 interface FormValue {
   firstname: string;
   lastname: string;
@@ -19,7 +17,7 @@ interface FormValue {
   password: string;
 }
 
-const SignUpPage: React.FunctionComponent<ISignUpPageProps> = (props) => {
+const SignUpPage: React.FunctionComponent = () => {
   const onSignUp = async (values: FormValue) => {
     try {
       // Lengkapi fungsi ini hingga bisa menambah data ke file db.json

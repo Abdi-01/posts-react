@@ -6,9 +6,8 @@ import { LanguageContext } from "@/contexts/LanguageContext";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { callAPI } from "@/config/axios";
 import { setSignIn } from "@/lib/redux/features/userSlice";
-interface INavbarProps {}
 
-const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
+const Navbar: React.FunctionComponent = () => {
   const { language, setLanguage } = React.useContext(LanguageContext);
   // Redux
   const dispatch = useAppDispatch();

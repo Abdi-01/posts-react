@@ -8,17 +8,14 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { FaEdit } from "react-icons/fa";
 import { callAPI } from "@/config/axios";
-import { setUpdateProfile } from "@/lib/redux/features/userSlice";
-
-interface IProfileProps {}
+import { setSignOut, setUpdateProfile } from "@/lib/redux/features/userSlice";
+import { useRouter } from "next/navigation";
 
 interface FormEditValue {
   firstname: string;
@@ -27,17 +24,11 @@ interface FormEditValue {
   email: string;
 }
 
-const Profile: React.FunctionComponent<IProfileProps> = (props) => {
-  const {
-    firstname,
-    lastname,
-    username,
-    email,
-    phone,
-    website,
-    imgprofile,
-    isVerified,
-  } = useAppSelector((state) => state.userReducer);
+const Profile: React.FunctionComponent = () => {
+  const router = useRouter();
+  const { firstname, lastname, username, email, imgprofile } = useAppSelector(
+    (state) => state.userReducer
+  );
   const dispatch = useAppDispatch();
 
   const [newImgProfile, setNewImgProfile] = React.useState<File | null>(null);
@@ -66,7 +57,7 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
 
   return (
     <div className="px-24 py-14 bg-slate-100 min-h-screen">
-      <div className="w-1/2 p-8 m-auto rounded-md shadow bg-white">
+      <div className="md:w-3/4 lg:w-1/2 p-8 m-auto rounded-md shadow bg-white">
         <div className="flex justify-between items-center">
           <div className="flex gap-4 items-center">
             <div className="relative">
@@ -112,7 +103,16 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
               <p className="text-gray-500 font-light">{email}</p>
             </div>
           </div>
-          <Button>Edit</Button>
+          <Button
+            type="button"
+            onClick={() => {
+              localStorage.removeItem("tkn");
+              router.replace("/");
+              dispatch(setSignOut());
+            }}
+          >
+            Sign Out
+          </Button>
         </div>
         <Formik
           enableReinitialize
@@ -189,7 +189,7 @@ const Profile: React.FunctionComponent<IProfileProps> = (props) => {
                   <div className="flex justify-end gap-4">
                     <Button
                       type="submit"
-                      className="text-white px-2 md:px-4 py-1 md:py-2 text-sm md:text-base rounded-full shadow"
+                      className="text-white px-2 md:px-4 py-1 md:py-2 text-sm md:text-base shadow"
                     >
                       Save
                     </Button>

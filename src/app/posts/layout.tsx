@@ -15,7 +15,11 @@ const PostLayout: React.FunctionComponent<IPostLayout> = async ({
   children,
 }) => {
   await new Promise((resolve) => setTimeout(resolve, 500));
-  return <AuthGuard>{children}</AuthGuard>;
+  return (
+    <div className="px-24 py-14 bg-slate-100 min-h-screen flex gap-8">
+      <AuthGuard>{children}</AuthGuard>;
+    </div>
+  );
 };
 
 export default PostLayout;
