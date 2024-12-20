@@ -38,12 +38,12 @@ const Navbar: React.FunctionComponent = () => {
     keepLogin();
   }, []);
   return (
-    <div className="flex items-center justify-between px-24 py-5">
+    <div className="flex items-center justify-between px-12 md:px-24 py-5">
       <Link href="/" className="text-3xl font-bold">
         P
       </Link>
       <ul className="flex items-center gap-5">
-        <li>
+        <li className="hidden lg:block">
           <div className="relative">
             <span className="absolute top-2.5 left-2">
               <FaSearch color="gray" />
@@ -55,7 +55,7 @@ const Navbar: React.FunctionComponent = () => {
             />
           </div>
         </li>
-        <li>
+        <li className="hidden lg:block">
           <span className="uppercase border p-1 rounded mx-2">{language}</span>
           <select
             className="bg-transparent"
@@ -68,7 +68,7 @@ const Navbar: React.FunctionComponent = () => {
         </li>
         <li className="flex gap-2">
           {user.email ? (
-            <p>{user.email}</p>
+            <Link href="/profile">{user.email}</Link>
           ) : (
             <>
               <Link

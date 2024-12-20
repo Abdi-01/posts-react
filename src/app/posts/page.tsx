@@ -4,12 +4,14 @@ import { useRouter } from "next/navigation";
 import { FaFile, FaImage } from "react-icons/fa";
 import { FaLocationPin } from "react-icons/fa6";
 import { callAPI } from "@/config/axios";
+import { Button } from "@/components/ui/button";
+import { Post } from "@/types/post";
 
 const PostPage: React.FunctionComponent = () => {
   const router = useRouter();
 
   const [userList, setUserList] = React.useState<any[]>([]);
-  const [postsList, setPostsList] = React.useState<any[]>([]);
+  const [postsList, setPostsList] = React.useState<Post[]>([]);
   const [post, setPost] = React.useState<string>("");
   const getUserList = async (): Promise<void> => {
     try {
@@ -22,9 +24,9 @@ const PostPage: React.FunctionComponent = () => {
 
   const getPostsList = async () => {
     try {
-      const res = await callAPI.get("/posts");
-      setPostsList(res.data.result);
-      console.log("posts", res.data);
+      const { data } = await callAPI.get("/posts");
+      setPostsList(data.result);
+      console.log("posts", data);
     } catch (error) {
       console.log(error);
     }
@@ -58,6 +60,8 @@ const PostPage: React.FunctionComponent = () => {
 
   const printPostsList = () => {
     return postsList.map((val: any, idx: number) => {
+      console.log(val);
+
       return (
         <div
           key={idx}
@@ -83,17 +87,21 @@ const PostPage: React.FunctionComponent = () => {
 
   return (
     <>
-      <div id="timeline" className="w-full">
-        <div className="flex items-center">
+      <div id="timeline" className="w-full ">
+        <div className="relative md:flex w-full items-center">
           <img
-            className="w-20 h-20 mx-3 bg-slate-100 rounded-full shadow-md"
+            className="absolute z-50 right-1 top-1 md:relative w-12 md:w-20 h-12 md:h-20 md:mx-3 bg-slate-100 rounded-full shadow-md"
             src={`https://robohash.org/random.png`}
             alt="icon"
           />
-          <div className="w-full bg-white p-3 rounded-lg shadow-md">
+          <div className="w-full bg-white md:p-3 rounded-lg shadow-md">
             <div className="relative w-full">
+              <input
+                placeholder="Title"
+                className="w-full p-3 rounded-md focus:outline-none"
+              />
               <textarea
-                className="w-full p-3 rounded-md resize-none"
+                className="w-full p-3 rounded-md resize-none focus:outline-none"
                 rows={2}
                 onChange={(e: any) => setPost(e.target.value)}
                 placeholder="Type your story"
@@ -102,32 +110,26 @@ const PostPage: React.FunctionComponent = () => {
                 {post.length}/350
               </span>
             </div>
-            <hr className="mb-4" />
-            <div className="flex justify-between items-center">
+            <hr className="md:mb-4" />
+            <div className="flex p-2 justify-between items-center">
               <div className="flex gap-2">
-                <button>
+                <div>
                   <FaImage size={24} color="#334156" />
-                </button>
-                <button>
-                  <FaFile size={24} color="#334156" />
-                </button>
-                <button>
-                  <FaLocationPin size={24} color="#334156" />
-                </button>
+                </div>
               </div>
-              <button
+              <Button
                 type="button"
-                className="bg-slate-700 text-white px-3 py-1 text-sm rounded-full shadow"
+                className="bg-slate-700 text-white md:px-3 md:py-0.5 text-sm rounded-full shadow"
               >
                 Post
-              </button>
+              </Button>
             </div>
           </div>
         </div>
         <hr className="my-4" />
         <div className="space-y-3">{printPostsList()}</div>
       </div>
-      <div id="user-list" className="lg:block lg:w-1/4">
+      <div id="user-list" className="none lg:block lg:w-1/4">
         <div className="sticky top-2">{printUserList()}</div>
       </div>
     </>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/core/Navbar";
 import LanguageProvider from "@/contexts/LanguageContext";
 import StoreProvider from "./StoreProvider";
 import { Suspense } from "react";

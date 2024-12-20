@@ -2,7 +2,7 @@
 import * as React from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { Button } from "@/components/ui/button";
-import FormInput from "@/components/FormInput";
+import FormInput from "@/components/core/FormInput";
 import { Formik, Form, FormikProps } from "formik";
 import {
   Dialog,
@@ -56,10 +56,10 @@ const Profile: React.FunctionComponent = () => {
   };
 
   return (
-    <div className="px-24 py-14 bg-slate-100 min-h-screen">
+    <div className="px-12 md:px-24 py-14 bg-slate-100 min-h-screen">
       <div className="md:w-3/4 lg:w-1/2 p-8 m-auto rounded-md shadow bg-white">
         <div className="flex justify-between items-center">
-          <div className="flex gap-4 items-center">
+          <div className="w-full flex flex-col md:flex-row gap-4 my-4 items-center">
             <div className="relative">
               <img
                 className="w-20 h-20 mx-3 bg-slate-100 rounded-full shadow-md"
@@ -96,7 +96,7 @@ const Profile: React.FunctionComponent = () => {
                 </DialogContent>
               </Dialog>
             </div>
-            <div>
+            <div className="text-center md:text-left">
               <p className="text-2xl font-bold">
                 {firstname} {lastname}
               </p>
@@ -104,6 +104,7 @@ const Profile: React.FunctionComponent = () => {
             </div>
           </div>
           <Button
+            className="hidden md:block"
             type="button"
             onClick={() => {
               localStorage.removeItem("tkn");
@@ -134,8 +135,8 @@ const Profile: React.FunctionComponent = () => {
             return (
               <Form>
                 <div className="py-2 md:py-6 space-y-5">
-                  <div className="flex gap-6">
-                    <div className="w-1/2 space-y-4">
+                  <div className="flex flex-col md:flex-row gap-6">
+                    <div className="md:w-1/2 space-y-4">
                       <FormInput
                         type="text"
                         name="firstname"
@@ -151,7 +152,7 @@ const Profile: React.FunctionComponent = () => {
                         value={values.username}
                       />
                     </div>
-                    <div className="w-1/2 space-y-4">
+                    <div className="md:w-1/2 space-y-4">
                       <FormInput
                         type="text"
                         name="lastname"
@@ -173,25 +174,23 @@ const Profile: React.FunctionComponent = () => {
                   ) : (
                     ""
                   )}
-                  {/* <FormInput
-                    type="password"
-                    name="password"
-                    label="Password"
-                    onChange={handleChange}
-                    value={values.password}
-                  />
-                  <FormInput
-                    type="password"
-                    name="confPassword"
-                    onChange={handleChange}
-                    label="Confirmation Password"
-                  /> */}
                   <div className="flex justify-end gap-4">
                     <Button
                       type="submit"
                       className="text-white px-2 md:px-4 py-1 md:py-2 text-sm md:text-base shadow"
                     >
                       Save
+                    </Button>
+                    <Button
+                      className="block md:hidden"
+                      type="button"
+                      onClick={() => {
+                        localStorage.removeItem("tkn");
+                        router.replace("/");
+                        dispatch(setSignOut());
+                      }}
+                    >
+                      Sign Out
                     </Button>
                   </div>
                 </div>

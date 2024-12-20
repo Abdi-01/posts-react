@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 interface IFormInput {
@@ -44,13 +45,13 @@ const FormInput: React.FC<IFormInput> = ({
             className="w-full border border-gray-100 px-3 py-2 rounded-md shadow"
             onChange={onChange}
           />
-          <button
+          <Button
             type="button"
             className="absolute right-1 top-1 w-12 p-1 rounded-md border"
             onClick={() => setIsVisible(!isVisible)}
           >
             {icon}
-          </button>
+          </Button>
         </div>
       </div>
     );

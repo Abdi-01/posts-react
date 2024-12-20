@@ -5,7 +5,7 @@ import AccountImage from "../../../public/access_account.svg";
 import { callAPI } from "@/config/axios";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import FormInput from "@/components/FormInput";
+import FormInput from "@/components/core/FormInput";
 import { Formik, Form, FormikProps } from "formik";
 import { SignUpSchema } from "./schemas/SignUpSchema";
 
@@ -34,16 +34,23 @@ const SignUpPage: React.FunctionComponent = () => {
     }
   };
   return (
-    <div className="px-5 md:px-24 py-14 bg-slate-800 h-screen block md:flex items-center gap-16">
+    <div className="px-12 md:px-24 pb-24 pt-14 bg-slate-800 h-screen overflow-y-auto block md:flex items-center gap-16 space-y-4">
       <div
         id="left"
-        className="hidden md:flex w-full md:w-1/2 flex-col justify-center space-y-5"
+        className="flex w-full md:w-1/2 flex-col justify-center md:space-y-5"
       >
         <h1 className="text-3xl text-white font-bold">Post your story</h1>
         <p className="text-white text-2xl font-thin">
           Lorem ipsum dolor sit amet consectetur adipisicing elit.
         </p>
-        <Image src={AccountImage} alt="image" width={350} className="m-auto" />
+        <div className="hidden md:block space-y-5">
+          <Image
+            src={AccountImage}
+            alt="image"
+            width={350}
+            className="m-auto"
+          />
+        </div>
       </div>
       <div id="right" className="w-full md:w-1/2 h-fit">
         <Card>
@@ -72,7 +79,7 @@ const SignUpPage: React.FunctionComponent = () => {
                 return (
                   <Form>
                     <div className="py-2 md:py-6 space-y-5">
-                      <div className="flex gap-8">
+                      <div className="flex flex-col md:flex-row gap-5 md:gap-8">
                         <FormInput
                           type="text"
                           name="firstname"
@@ -120,14 +127,14 @@ const SignUpPage: React.FunctionComponent = () => {
                         onChange={handleChange}
                         label="Confirmation Password"
                       />
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center justify-between gap-4">
+                        <p className="text-sm">Already have an account ?</p>
                         <Button
                           type="submit"
-                          className="bg-gray-400 text-white px-2 md:px-4 py-1 md:py-2 text-sm md:text-base rounded-full shadow"
+                          className="bg-gray-400 text-white px-2 md:px-4 py-1 md:py-2 text-sm md:text-base shadow"
                         >
                           Sign Up
                         </Button>
-                        <p className="text-sm">Already have an account ?</p>
                       </div>
                     </div>
                   </Form>
