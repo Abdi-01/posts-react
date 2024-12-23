@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import FormInput from "@/components/core/FormInput";
 import { Formik, Form, FormikProps } from "formik";
 import { SignUpSchema } from "./schemas/SignUpSchema";
+import { useRouter } from "next/navigation";
 
 interface FormValue {
   firstname: string;
@@ -18,6 +19,7 @@ interface FormValue {
 }
 
 const SignUpPage: React.FunctionComponent = () => {
+  const router = useRouter();
   const onSignUp = async (values: FormValue) => {
     try {
       // Lengkapi fungsi ini hingga bisa menambah data ke file db.json
@@ -34,115 +36,122 @@ const SignUpPage: React.FunctionComponent = () => {
     }
   };
   return (
-    <div className="px-12 md:px-24 pb-24 pt-14 bg-slate-800 h-screen overflow-y-auto block md:flex items-center gap-16 space-y-4">
-      <div
-        id="left"
-        className="flex w-full md:w-1/2 flex-col justify-center md:space-y-5"
-      >
-        <h1 className="text-3xl text-white font-bold">Post your story</h1>
-        <p className="text-white text-2xl font-thin">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        </p>
-        <div className="hidden md:block space-y-5">
-          <Image
-            src={AccountImage}
-            alt="image"
-            width={350}
-            className="m-auto"
-          />
+    <div className="bg-slate-800 h-screen overflow-y-auto px-6 py-10 md:py-52">
+      <div className="container m-auto flex flex-col md:flex-row items-center gap-5 md:gap-16">
+        <div
+          id="left"
+          className="flex w-full md:w-1/2 flex-col justify-center md:space-y-5"
+        >
+          <h1 className="text-3xl text-white font-bold">Post your story</h1>
+          <p className="text-white text-2xl font-thin">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          </p>
+          <div className="hidden md:block space-y-5">
+            <Image
+              src={AccountImage}
+              alt="image"
+              width={350}
+              className="m-auto"
+            />
+          </div>
         </div>
-      </div>
-      <div id="right" className="w-full md:w-1/2 h-fit">
-        <Card>
-          <CardHeader>
-            <h1 className="text-2xl">Sign up now</h1>
-          </CardHeader>
-          <CardContent>
-            <Formik
-              initialValues={{
-                firstname: "",
-                lastname: "",
-                username: "",
-                email: "",
-                password: "",
-              }}
-              validationSchema={SignUpSchema}
-              onSubmit={(values) => {
-                // console.log(values);
-                onSignUp(values);
-              }}
-            >
-              {(props: FormikProps<FormValue>) => {
-                const { handleChange, values, touched, errors } = props;
-                console.log("error formik", errors);
+        <div id="right" className="w-full md:w-1/2 h-fit">
+          <Card>
+            <CardHeader>
+              <h1 className="text-2xl">Sign up now</h1>
+            </CardHeader>
+            <CardContent>
+              <Formik
+                initialValues={{
+                  firstname: "",
+                  lastname: "",
+                  username: "",
+                  email: "",
+                  password: "",
+                }}
+                validationSchema={SignUpSchema}
+                onSubmit={(values) => {
+                  // console.log(values);
+                  onSignUp(values);
+                }}
+              >
+                {(props: FormikProps<FormValue>) => {
+                  const { handleChange, values, touched, errors } = props;
+                  console.log("error formik", errors);
 
-                return (
-                  <Form>
-                    <div className="py-2 md:py-6 space-y-5">
-                      <div className="flex flex-col md:flex-row gap-5 md:gap-8">
+                  return (
+                    <Form>
+                      <div className="py-2 md:py-6 space-y-5">
+                        <div className="flex flex-col md:flex-row gap-5 md:gap-8">
+                          <FormInput
+                            type="text"
+                            name="firstname"
+                            label="First name"
+                            onChange={handleChange}
+                            value={values.firstname}
+                          />
+                          <FormInput
+                            type="text"
+                            name="lastname"
+                            label="Last name"
+                            onChange={handleChange}
+                            value={values.lastname}
+                          />
+                        </div>
                         <FormInput
                           type="text"
-                          name="firstname"
-                          label="First name"
+                          name="username"
+                          label="Username"
                           onChange={handleChange}
-                          value={values.firstname}
+                          value={values.username}
                         />
                         <FormInput
                           type="text"
-                          name="lastname"
-                          label="Last name"
+                          name="email"
+                          label="Email"
                           onChange={handleChange}
-                          value={values.lastname}
+                          value={values.email}
                         />
+                        {touched.email && errors.email ? (
+                          <p className="text-red-400">{errors.email}</p>
+                        ) : (
+                          ""
+                        )}
+                        <FormInput
+                          type="password"
+                          name="password"
+                          label="Password"
+                          onChange={handleChange}
+                          value={values.password}
+                        />
+                        <FormInput
+                          type="password"
+                          name="confPassword"
+                          onChange={handleChange}
+                          label="Confirmation Password"
+                        />
+                        <div className="flex items-center justify-between gap-4">
+                          <p
+                            className="text-xs cursor-pointer hover:text-blue-600"
+                            onClick={() => router.push("/sign-in")}
+                          >
+                            Already have an account ?
+                          </p>
+                          <Button
+                            type="submit"
+                            className="bg-gray-400 text-white px-2 md:px-4 py-1 md:py-2 text-sm md:text-base shadow"
+                          >
+                            Sign Up
+                          </Button>
+                        </div>
                       </div>
-                      <FormInput
-                        type="text"
-                        name="username"
-                        label="Username"
-                        onChange={handleChange}
-                        value={values.username}
-                      />
-                      <FormInput
-                        type="text"
-                        name="email"
-                        label="Email"
-                        onChange={handleChange}
-                        value={values.email}
-                      />
-                      {touched.email && errors.email ? (
-                        <p className="text-red-400">{errors.email}</p>
-                      ) : (
-                        ""
-                      )}
-                      <FormInput
-                        type="password"
-                        name="password"
-                        label="Password"
-                        onChange={handleChange}
-                        value={values.password}
-                      />
-                      <FormInput
-                        type="password"
-                        name="confPassword"
-                        onChange={handleChange}
-                        label="Confirmation Password"
-                      />
-                      <div className="flex items-center justify-between gap-4">
-                        <p className="text-sm">Already have an account ?</p>
-                        <Button
-                          type="submit"
-                          className="bg-gray-400 text-white px-2 md:px-4 py-1 md:py-2 text-sm md:text-base shadow"
-                        >
-                          Sign Up
-                        </Button>
-                      </div>
-                    </div>
-                  </Form>
-                );
-              }}
-            </Formik>
-          </CardContent>
-        </Card>
+                    </Form>
+                  );
+                }}
+              </Formik>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

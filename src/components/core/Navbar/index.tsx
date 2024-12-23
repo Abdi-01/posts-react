@@ -38,7 +38,7 @@ const Navbar: React.FunctionComponent = () => {
     keepLogin();
   }, []);
   return (
-    <div className="flex items-center justify-between px-12 md:px-24 py-5">
+    <div className="flex items-center justify-between px-6 md:px-24 py-5">
       <Link href="/" className="text-3xl font-bold">
         P
       </Link>

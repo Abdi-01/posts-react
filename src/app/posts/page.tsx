@@ -1,8 +1,7 @@
 "use client";
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { FaFile, FaImage } from "react-icons/fa";
-import { FaLocationPin } from "react-icons/fa6";
+import { FaImage } from "react-icons/fa";
 import { callAPI } from "@/config/axios";
 import { Button } from "@/components/ui/button";
 import { Post } from "@/types/post";
