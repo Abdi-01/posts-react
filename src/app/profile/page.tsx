@@ -56,7 +56,7 @@ const Profile: React.FunctionComponent = () => {
   };
 
   return (
-    <div className="px-12 md:px-24 py-14 bg-slate-100 min-h-screen">
+    <div className="px-6 md:px-24 py-14 bg-slate-100 min-h-screen">
       <div className="md:w-3/4 lg:w-1/2 p-8 m-auto rounded-md shadow bg-white">
         <div className="flex justify-between items-center">
           <div className="w-full flex flex-col md:flex-row gap-4 my-4 items-center">
