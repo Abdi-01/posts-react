@@ -1,3 +1,4 @@
+import { SessionProvider } from "next-auth/react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -30,18 +31,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Suspense fallback={<Loading />}>
-        <StoreProvider>
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-          >
-            <LanguageProvider>
-              <Navbar />
-              {children}
-            </LanguageProvider>
-          </body>
-        </StoreProvider>
-      </Suspense>
+      <SessionProvider>
+        <Suspense fallback={<Loading />}>
+          <StoreProvider>
+            <body
+              className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            >
+              <LanguageProvider>
+                <Navbar />
+                {children}
+              </LanguageProvider>
+            </body>
+          </StoreProvider>
+        </Suspense>
+      </SessionProvider>
     </html>
   );
 }

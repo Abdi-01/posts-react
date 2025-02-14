@@ -8,6 +8,7 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { setSignIn } from "@/lib/redux/features/userSlice";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
 
 const SignInPage: React.FunctionComponent = () => {
   const router = useRouter();
@@ -32,6 +33,22 @@ const SignInPage: React.FunctionComponent = () => {
     }
   };
 
+  const nextAuthSignIn = async () => {
+    try {
+      const response = await axios.post(`/api/login`, {
+        email,
+        password,
+        type: "credentials",
+      });
+      console.log("CHECK SIGNIN RESPONSE PAGE: ", response.data);
+      if (response.data.success) {
+        router.replace("/posts");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="bg-slate-800 h-screen px-6 py-10 md:py-52">
       <div className="container m-auto flex flex-col md:flex-row items-center gap-5 md:gap-16">
@@ -39,8 +56,8 @@ const SignInPage: React.FunctionComponent = () => {
           id="left"
           className="w-full md:w-1/2 h-fit order-2 md:order-1 rounded-2xl px-5 md:px-10 py-4 md:py-8 bg-white"
         >
-          <h1 className="text-2xl">Sign in </h1>
-          <div className="py-6 space-y-5">
+          <h2 className="text-2xl">Sign in </h2>
+          <form className="py-6 space-y-5">
             <FormInput
               name="email"
               type="text"
@@ -57,18 +74,18 @@ const SignInPage: React.FunctionComponent = () => {
               <Button
                 type="button"
                 className="bg-slate-700 text-white px-4 py-2 shadow"
-                onClick={onSignIn}
+                onClick={nextAuthSignIn}
               >
                 Sign In
               </Button>
             </div>
-          </div>
+          </form>
         </div>
         <div
           id="right"
           className="w-full md:w-1/2 flex flex-col order-1 md:order-2 justify-center md:space-y-5"
         >
-          <h1 className="text-3xl text-white font-bold">Post your story</h1>
+          <h2 className="text-3xl text-white font-bold">Post your story</h2>
           <p className="text-white text-2xl font-thin">
             Lorem ipsum dolor sit amet consectetur adipisicing elit.
           </p>

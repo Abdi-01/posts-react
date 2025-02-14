@@ -6,8 +6,11 @@ import { LanguageContext } from "@/contexts/LanguageContext";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { callAPI } from "@/config/axios";
 import { setSignIn } from "@/lib/redux/features/userSlice";
+import { signOut, useSession } from "next-auth/react";
+import { Button } from "@/components/ui/button";
 
 const Navbar: React.FunctionComponent = () => {
+  const { data: sessionNextAuth } = useSession();
   const { language, setLanguage } = React.useContext(LanguageContext);
   // Redux
   const dispatch = useAppDispatch();
@@ -65,27 +68,32 @@ const Navbar: React.FunctionComponent = () => {
             <option value="en">English (United State)</option>
             <option value="id">Indonesia</option>
           </select>
-        </li>
-        <li className="flex gap-2">
-          {user.email ? (
-            <Link href="/profile">{user.email}</Link>
-          ) : (
-            <>
-              <Link
-                href="/sign-up"
-                className="bg-slate-200 text-slate-700 px-3 py-1 rounded-md shadow"
-              >
-                Sign Up
-              </Link>
-              <Link
-                href="/sign-in"
-                className="bg-slate-700 text-white px-3 py-1 rounded-md shadow"
-              >
-                Sign In
-              </Link>
-            </>
-          )}
-        </li>
+        </li>{" "}
+        {sessionNextAuth ? (
+          <li className="flex gap-4 items-center">
+            <Link href="/profile">
+              {sessionNextAuth ? sessionNextAuth?.user?.username : ""}
+            </Link>
+            <Button type="button" variant="outline" onClick={() => signOut()}>
+              Sign Out
+            </Button>
+          </li>
+        ) : (
+          <li className="flex gap-2">
+            <Link
+              href="/sign-up"
+              className="bg-slate-200 text-slate-700 px-3 py-1 rounded-md shadow"
+            >
+              Sign Up
+            </Link>
+            <Link
+              href="/sign-in"
+              className="bg-slate-700 text-white px-3 py-1 rounded-md shadow"
+            >
+              Sign In
+            </Link>
+          </li>
+        )}
       </ul>
     </div>
   );
