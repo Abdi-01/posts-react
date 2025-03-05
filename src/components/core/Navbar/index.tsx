@@ -5,27 +5,38 @@ import { FaSearch } from "react-icons/fa";
 import { LanguageContext } from "@/contexts/LanguageContext";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { callAPI } from "@/config/axios";
-import { setSignIn } from "@/lib/redux/features/userSlice";
+import { setSignIn, setSignOut } from "@/lib/redux/features/userSlice";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar: React.FunctionComponent = () => {
+  const router = useRouter();
   const { language, setLanguage } = React.useContext(LanguageContext);
   // Redux
   const dispatch = useAppDispatch();
   // Get value from global store reducer user
   const user = useAppSelector((state) => state.userReducer);
+  console.log("Data from reducer", user);
 
   const keepLogin = async () => {
     try {
-      const token = localStorage.getItem("tkn");
-      if (token) {
-        const response = await callAPI.get(`/user/keep-login`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      const auth = localStorage.getItem("tkn");
+      if (auth) {
+        const query = encodeURIComponent(`objectId='${auth}'`);
+        const response = await callAPI.get(`/accounts?where=${query}`);
         console.log("CHECK SIGNIN RESPONSE : ", response.data);
-        dispatch(setSignIn({ ...response.data, isAuth: true })); // store data to global store redux
-        localStorage.setItem("tkn", response.data.token);
+        if (response.data.length === 1) {
+          dispatch(setSignIn({ ...response.data[0], isAuth: true })); // store data to global store redux
+          localStorage.setItem("tkn", response.data[0].objectId);
+        }
       } else {
         dispatch(setSignIn({ isAuth: false })); // store data to global store redux
       }
@@ -38,7 +49,7 @@ const Navbar: React.FunctionComponent = () => {
     keepLogin();
   }, []);
   return (
-    <div className="flex items-center justify-between px-6 md:px-24 py-5">
+    <div className="flex items-center justify-between px-6 lg:px-24 py-5">
       <Link href="/" className="text-3xl font-bold">
         P
       </Link>
@@ -66,9 +77,34 @@ const Navbar: React.FunctionComponent = () => {
             <option value="id">Indonesia</option>
           </select>
         </li>
-        <li className="flex gap-2">
+        <li className="flex items-center gap-2">
           {user.email ? (
-            <Link href="/profile">{user.email}</Link>
+            <>
+              <DropdownMenu>
+                <DropdownMenuTrigger>Hello, {user.email}</DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>What are you doing ?</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Link href="/my-article">My Article</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Button
+                      type="button"
+                      className="w-full"
+                      onClick={() => {
+                        dispatch(setSignOut());
+                        localStorage.removeItem("tkn");
+                        router.replace("/");
+                      }}
+                    >
+                      Sign Out
+                    </Button>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
           ) : (
             <>
               <Link

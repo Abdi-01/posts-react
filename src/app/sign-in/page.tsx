@@ -8,25 +8,32 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { setSignIn } from "@/lib/redux/features/userSlice";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { Formik, Form, FormikProps } from "formik";
+import { SignInSchema } from "./schemas/SignInSchema";
+
+interface IFormValue {
+  email: string;
+  password: string;
+}
 
 const SignInPage: React.FunctionComponent = () => {
   const router = useRouter();
-  const [email, setEmail] = React.useState<string>("");
-  const [password, setPassword] = React.useState<string>("");
 
   // Define dispatch from useAppDispatch for execute function actions from redux
   const dispatch = useAppDispatch();
 
-  const onSignIn = async () => {
+  const onSignIn = async (values: IFormValue) => {
     try {
-      const response = await callAPI.post(`/user/signin`, {
-        email,
-        password,
-      });
+      const query = encodeURIComponent(
+        `email='${values.email}' AND password='${values.password}'`
+      );
+      const response = await callAPI.get(`/accounts?where=${query}`);
       console.log("CHECK SIGNIN RESPONSE : ", response.data);
-      dispatch(setSignIn({ ...response.data, isAuth: true })); // store data to global store redux
-      localStorage.setItem("tkn", response.data.token);
-      router.replace("/posts");
+      if (response.data.length === 1) {
+        dispatch(setSignIn({ ...response.data[0], isAuth: true })); // store data to global store redux
+        localStorage.setItem("tkn", response.data[0].objectId);
+        router.replace("/timeline");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -40,29 +47,42 @@ const SignInPage: React.FunctionComponent = () => {
           className="w-full md:w-1/2 h-fit order-2 md:order-1 rounded-2xl px-5 md:px-10 py-4 md:py-8 bg-white"
         >
           <h1 className="text-2xl">Sign in </h1>
-          <div className="py-6 space-y-5">
-            <FormInput
-              name="email"
-              type="text"
-              label="Email"
-              onChange={(e: any) => setEmail(e.target.value)}
-            />
-            <FormInput
-              name="password"
-              type="password"
-              label="Password"
-              onChange={(e: any) => setPassword(e.target.value)}
-            />
-            <div className="flex items-center justify-end gap-4">
-              <Button
-                type="button"
-                className="bg-slate-700 text-white px-4 py-2 shadow"
-                onClick={onSignIn}
-              >
-                Sign In
-              </Button>
-            </div>
-          </div>
+
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            validationSchema={SignInSchema}
+            onSubmit={onSignIn}
+          >
+            {(props: FormikProps<IFormValue>) => {
+              const { errors, values, handleChange } = props;
+              return (
+                <Form>
+                  <div className="py-6 space-y-5">
+                    <FormInput
+                      name="email"
+                      type="text"
+                      label="Email"
+                      onChange={handleChange}
+                    />
+                    <FormInput
+                      name="password"
+                      type="password"
+                      label="Password"
+                      onChange={handleChange}
+                    />
+                    <div className="flex items-center justify-end gap-4">
+                      <Button
+                        type="submit"
+                        className="bg-slate-700 text-white px-4 py-2 shadow"
+                      >
+                        Sign In
+                      </Button>
+                    </div>
+                  </div>
+                </Form>
+              );
+            }}
+          </Formik>
         </div>
         <div
           id="right"

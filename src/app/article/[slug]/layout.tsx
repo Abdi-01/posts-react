@@ -16,11 +16,14 @@ export const generateMetadata = async ({
   params,
 }: PropsParam): Promise<Metadata> => {
   const slug = (await params).slug;
-  const res = await callAPI.get(`/posts/${slug}`);
-  console.log(res.data);
+  const query = encodeURIComponent(`title=`);
+  const res = await callAPI.get(
+    `/articles?where=${query}'${slug}'&loadRelations=accountData`
+  );
+  console.log("check", res.data);
 
   return {
-    title: res.data.result.title,
+    title: res.data[0].title,
   };
 };
 

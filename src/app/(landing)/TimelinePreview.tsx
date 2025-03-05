@@ -1,25 +1,14 @@
 import { callAPI } from "@/config/axios";
-
-type Article = {
-  imgurl: string;
-  created: number;
-  ___class: string;
-  id: number;
-  published: boolean;
-  ownerId: string | null;
-  title: string;
-  updated: number | null;
-  objectId: string;
-  content: string;
-};
+import { IArticle } from "@/types/article";
+import Image from "next/image";
 
 // Fetch articles data directly in the Server Component
-const getArticles = async (): Promise<Article[]> => {
+const getArticles = async (): Promise<IArticle[]> => {
   try {
-    const { data } = await callAPI.get<Article[]>(
-      "https://astirhistory-us.backendless.app/api/data/articles"
+    const { data } = await callAPI.get(
+      "/articles?sortBy=%60created%60%20desc&loadRelations=accountData"
     );
-    return data;
+    return data.slice(0, 3);
   } catch (error) {
     console.error("Failed to fetch articles:", error);
     return []; // Return an empty array on failure
@@ -33,19 +22,37 @@ const TimelinePreview = async () => {
   const printTimeline = () => {
     return articles.map((article) => (
       <div
-        key={article.id}
-        className="bg-white rounded-lg shadow-md cursor-pointer"
+        key={article.objectId}
+        className="w-full flex bg-white rounded-lg shadow-md cursor-pointer"
       >
-        <div className="bg-slate-100 rounded-t-lg">
-          <h4 className="p-2 px-4 font-semibold">{article.title}</h4>
+        <div className="relative h-52 w-80">
+          <Image
+            src={
+              article.thumbnail ||
+              `https://dummyimage.com/600x400/000/fff&text=PWD`
+            }
+            alt={article.title}
+            layout="fill"
+            objectFit="cover"
+          />
         </div>
-        <p className="font-thin px-4 py-2">{article.content}</p>
+        <div className="w-full p-4 bg-slate-100 rounded-lg">
+          <div className="flex items-center justify-between">
+            <h6 className="px-4 uppercase font-semibold text-sm text-gray-500">
+              {article.accountData.username}
+            </h6>
+            <span className="border border-slate-500 rounded-full py-0.5 px-2 text-xs">
+              {article.category}
+            </span>
+          </div>
+          <p className="font-light text-lg px-4 py-2">{article.title}</p>
+        </div>
       </div>
     ));
   };
 
   return (
-    <div className="md:w-3/4 m-auto grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="m-auto grid grid-cols-1 md:grid-cols-3 gap-4">
       {printTimeline()}
     </div>
   );

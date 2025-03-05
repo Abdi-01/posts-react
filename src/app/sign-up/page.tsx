@@ -23,14 +23,14 @@ const SignUpPage: React.FunctionComponent = () => {
   const onSignUp = async (values: FormValue) => {
     try {
       // Lengkapi fungsi ini hingga bisa menambah data ke file db.json
-      const res = await callAPI.post("/user/signup", {
+      const res = await callAPI.post("/accounts", {
         firstname: values.firstname,
         lastname: values.lastname,
         username: values.username,
         email: values.email,
         password: values.password,
       });
-      alert(res.data.message);
+      alert("Pendaftaran akun berhasil");
     } catch (error) {
       console.log(error);
     }
@@ -70,10 +70,7 @@ const SignUpPage: React.FunctionComponent = () => {
                   password: "",
                 }}
                 validationSchema={SignUpSchema}
-                onSubmit={(values) => {
-                  // console.log(values);
-                  onSignUp(values);
-                }}
+                onSubmit={onSignUp}
               >
                 {(props: FormikProps<FormValue>) => {
                   const { handleChange, values, touched, errors } = props;

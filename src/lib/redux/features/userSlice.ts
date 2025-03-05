@@ -27,11 +27,11 @@ const userSlice = createSlice({
     setSignIn: (initialState, action) => {
       console.log("CHECK ACTION REDUX FROM USER SIGNIN:", action);
       // Store data to global store user reducer
-      return { ...action.payload };
+      return action.payload;
     },
     setSignOut: () => {
       // reset data in global store user reducer
-      return { ...initialData };
+      return initialData;
     },
     setUpdateProfile: (initialState, action) => {
       console.log("NEW PROFILE UPDATE", action.payload);
